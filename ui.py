@@ -56,7 +56,7 @@ def render(blueprint):
                                     2, startCorY+size*j+size//2, image=getPhoto(blueprint[cursor.layer][i][j].name, 1))
                 # canvas.create_rectangle(startCorX+size*curRecX, startCorY+size*curRecY,startCorX+size*(curRecX+1), startCorY+size*(curRecY+1), fill="red") #color[blueprint.blueprint[cursor.layer][curRecX][curRecY].name]
                 canvas.create_text(startCorX+size*i, startCorY +
-                                   size*j, text=cursor.block.number, anchor="nw")
+                                   size*j, text=blueprint[cursor.layer][i][j].number, anchor="nw")
             else:
                 canvas.create_rectangle(startCorX+size*i, startCorY+size*j,
                                         startCorX+size*(i+1), startCorY+size*(j+1), fill="bisque")  # color[blueprint[cursor.layer][i][j].name]
@@ -91,10 +91,8 @@ def reduce_opacity(im, opacity):
 
 
 def getPhoto(name,opacity):
-    print(name+str(opacity))
     photo = photos.get(name+str(opacity))
     if photo == None:
-        print("reading photo")
         image = PIL.Image.open("blocks/"+name+".png")
         image = image.resize((size, size), PIL.Image.Resampling.LANCZOS)
         image = reduce_opacity(image,opacity)
@@ -108,7 +106,6 @@ def stackBlock(x, y):
     curRecY = (y - startCorY)//size
     if 0 <= curRecX < blueprintSize and 0 <= curRecY < blueprintSize:
         if cursor.clickState == 1:
-            print(cursor.block.name)
             
             canvas.create_rectangle(startCorX+size*curRecX, startCorY+size*curRecY,
                                     startCorX+size*(curRecX+1), startCorY+size*(curRecY+1), fill="bisque")
@@ -156,7 +153,6 @@ def moved(event):
 blockList = os.listdir("./blocks")
 for i in range(len(blockList)):
     blockList[i] = blockList[i].replace(".png", "")
-print(blockList)
 
 
 cursor = Cursor()
@@ -164,7 +160,8 @@ startCorX = 20
 startCorY = 20
 size = 50
 blueprintSize = 17
-blueprint = Blueprint(Block("", 0), blueprintSize)
+address = input("함수 파일을 저장할 경로를 파일이름을 포함한 절대경로로 입력하세요.\n함수파일의 확장자는 .mcfunction이어야 합니다.\n입력값이 올바르지 않을 시 오류가 발생할 수 있습니다.\n")
+blueprint = Blueprint(Block("", 0), blueprintSize,address)
 
 root = tk.Tk()
 root.geometry("1500x1000")

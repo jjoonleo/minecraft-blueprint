@@ -4,10 +4,11 @@ from cursor import *
 
 
 class Blueprint:
-    def __init__(self, block, size):
+    def __init__(self, block, size,address):
         self.blueprint = [[[block for col in range(size)]
                            for row in range(size)] for z in range(size)]
         self.size = size
+        self.address = address
 
     def __getCommand_setblock(self, x, y, z, block):
         replaceStr = ["bottom", "top", "scursor.block.namede",
@@ -27,7 +28,7 @@ class Blueprint:
         return "setblock ~{} ~{} ~{} {}:{}\n".format(x, y, z, block.namespace, name)
 
     def build(self):
-        f = open("C:/Users/jjoon/AppData/Roaming/.minecraft/saves/function/datapacks/ejun/data/ejun/functions/blueprint.mcfunction", 'w')
+        f = open(self.address, 'w')
 
         for y in range(len(self.blueprint)):
             for x in range(len(self.blueprint[y])):
